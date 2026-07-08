@@ -1,0 +1,128 @@
+---
+title: "How Do Price and Brand Influence Perfume Sales on eBay?"
+subtitle: "MSDM CEP Proposal Presentation"
+author: "Grace Sen"
+institute: "IBM 6540, Cal Poly Pomona"
+date: today
+format: 
+  revealjs:
+    theme: serif
+    width: 1600
+    height: 900
+    footer: Title of Your Project
+    transition: slide
+    transition-speed: default
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    number-sections: false
+    number-depth: 5
+    embed-resources: true
+    css: styles.css
+editor: visual
+execute: 
+  echo: false
+  freeze: auto
+---
+
+# Introduction
+
+The perfume industry has become increasingly competitive, with many brands selling similar products through e-commerce platforms such as *eBay*. Retailers need to understand which factors, including **brand, price, and product type**, are associated with higher sales in order to make better pricing and inventory decisions. This project analyzes an eBay perfume dataset to identify sales patterns and provide insights that support more effective marketing strategies.
+
+------------------------------------------------------------------------
+
+# Analytics objective
+
+The goal of this project is to explore how **price** and **brand** are related to perfume sales on eBay. By identifying which products sell better, retailers can make more informed decisions about pricing, inventory, and marketing strategies.
+
+------------------------------------------------------------------------
+
+# Dataset
+
+**Dataset Source:** Kaggle – Perfume E-Commerce Dataset\
+
+**Records:** 1,000 women's perfume listings from eBay\
+
+**Key Variables:** Brand, perfume type, price, units sold, inventory available, and seller location.
+
+------------------------------------------------------------------------
+
+# Sample characteristics
+
+> **Top 10 Brands by Total Units Sold**
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 7
+library(tidyverse)
+
+perfume <- read_csv("dataset/ebay_womens_perfume_data.csv")
+
+
+# chart 1
+library(tidyverse)
+
+brand_sales <- perfume |>
+  group_by(brand) |>
+  summarise(
+    total_sold = sum(sold, na.rm = TRUE)
+  ) |>
+  arrange(desc(total_sold)) |>
+  slice_head(n = 10)
+
+ggplot(
+  brand_sales,
+  aes(
+    x = reorder(brand, total_sold),
+    y = total_sold
+  )
+) +
+  geom_col(fill = "#8B1E3F") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Perfume Brands by Units Sold",
+    x = "Brand",
+    y = "Units Sold"
+  ) +
+  theme_minimal(base_size = 18)
+```
+
+The chart compares the ten brands with the highest total sales. It helps identify which brands dominate the market and may deserve greater marketing attention or inventory investment.
+
+------------------------------------------------------------------------
+
+## Key findings
+
+-   *Calvin Klein* sold **48,300** units.
+
+-   *Versace* sold **31,800** units.
+
+-   The top two brands account for much **higher sales** than the remaining brands.
+
+-   This suggests retailers may **prioritize** these brands for **promotions and inventory planning**.
+
+These results suggest that retailers may benefit from allocating more inventory and promotional resources to high-performing brands while evaluating why lower-selling brands underperform.
+
+------------------------------------------------------------------------
+
+# Proposed Analytics Methods
+
+-   **Data cleaning**: Handle missing values and prepare the perfume dataset for analysis.
+
+-   **Exploratory Data Analysis (EDA)**: Explore patterns in price, brand, and units sold using charts and summary statistics.
+
+-   **Regression analysis**: Examine whether price and brand are associated with higher perfume sales.
+
+-   **Visualization**: Present the results with clear charts to support pricing and marketing decisions.
+
+------------------------------------------------------------------------
+
+# Expected Business Value
+
+By identifying which brands and price ranges are associated with higher sales, this project can help online perfume retailers **make more informed business decisions**. The results may **support better pricing, inventory planning, and promotional strategies**, allowing retailers to focus on products with the greatest sales potential.
